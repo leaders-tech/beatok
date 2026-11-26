@@ -1,0 +1,15 @@
+{
+  "name": "beatok",
+  "version": "1.0.0",
+  "private": true,
+  "description": "BeatOk Studio: online beat-making studio in one HTML page (Web Audio, no dependencies)",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "node build.mjs && node tests/smoke.mjs /tmp && node tests/flows.mjs && node tests/full.mjs",
+    "levels": "node build.mjs && node tests/levels.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.50.0"
+  }
+}

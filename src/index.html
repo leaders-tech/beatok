@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BeatOk Studio</title>
+<meta name="description" content="BeatOk: онлайн-студия для битов. Channel Rack, Piano Roll, Playlist, микшер с эффектами, синтезаторы, 808 и экспорт в WAV.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+/*__CSS__*/
+</style>
+</head>
+<body>
+<div id="app">
+  <header id="top"></header>
+  <div id="main">
+    <aside id="browser" aria-label="Звуки, шаблоны и эффекты"></aside>
+    <section id="work">
+      <div class="pane" id="paneTop">
+        <div class="ptabs" id="tabsTop"></div>
+        <div class="pbody"><div class="view" id="vRack"></div><div class="view" id="vRoll"></div></div>
+      </div>
+      <div id="split" role="separator" aria-label="Граница панелей" data-hint="Перетащи, чтобы изменить размер панелей. Двойной клик — сброс"></div>
+      <div class="pane" id="paneBot">
+        <div class="ptabs" id="tabsBot"></div>
+        <div class="pbody"><div class="view" id="vPlaylist"></div><div class="view" id="vMixer"></div></div>
+      </div>
+    </section>
+  </div>
+  <footer id="hint"><span class="ht"></span><span class="hv"></span></footer>
+</div>
+<div id="layer"></div>
+<script>
+/*__JS__*/
+</script>
+</body>
+</html>

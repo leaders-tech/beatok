@@ -1,0 +1,9 @@
+services:
+  web:
+    build:
+      context: .
+    expose:
+      - "8080"
+    labels:
+      tlfpaas.route: "web"
+    restart: unless-stopped
