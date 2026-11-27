@@ -22,6 +22,8 @@ Object.assign(UI, {
     this.stepEls = {};
     this.nameEls = {};
     this.curStep = -1;
+    this.phX = null;
+    this.phEl = h('div', { class: 'phd' });
     if (!pat) return;
     const groups = Math.ceil(pat.len / 4);
     const head = h('div', { class: 'rackhead' }, h('div', { style: { width: '248px', flex: 'none' } }));
@@ -46,6 +48,7 @@ Object.assign(UI, {
     });
     foot.append(add, h('span', { class: 'lbl', text: 'Длина' }), lenSel);
     inner.append(foot);
+    inner.append(this.phEl);
     rack.scrollLeft = sx;
     rack.scrollTop = sy;
   },
@@ -269,6 +272,31 @@ Object.assign(UI, {
     ]);
   },
 
+  rackHead() {
+    const el = this.phEl;
+    if (!el || !el.isConnected) return;
+    if (!(Engine.playing && Engine.mode === 'pattern')) { el.style.display = 'none'; return; }
+    const ids = Object.keys(this.stepEls);
+    const first = ids.length && this.stepEls[ids[0]];
+    if (!first || !first.length) { el.style.display = 'none'; return; }
+    const inner = el.parentNode;
+    const ir0 = inner.getBoundingClientRect(), l0 = first[0].getBoundingClientRect().left - ir0.left;
+    if (!this.phX || Math.abs(this.phX[0] - l0) > 0.5 || this.phH !== inner.scrollHeight) {
+      const ir = ir0;
+      this.phX = first.map(s => s.getBoundingClientRect().left - ir.left);
+      const last = first[first.length - 1].getBoundingClientRect();
+      this.phX.push(last.right - ir.left);
+      this.phH = inner.scrollHeight;
+      el.style.height = this.phH + 'px';
+    }
+    const pos = Engine.displayPos();
+    const i = Math.min(first.length - 1, Math.floor(pos));
+    const a = this.phX[i], b = this.phX[i + 1];
+    const x = a + (b - a) * Math.min(1, pos - i);
+    el.style.display = 'block';
+    el.style.transform = 'translateX(' + x.toFixed(1) + 'px)';
+  },
+
   rackFrame() {
     let cur = -1;
     if (Engine.playing && Engine.mode === 'pattern') cur = Math.floor(Engine.displayPos());
@@ -280,6 +308,7 @@ Object.assign(UI, {
       }
       this.curStep = cur;
     }
+    this.rackHead();
     if (!Engine.ctx) return;
     const now = Engine.ctx.currentTime;
     const hits = Engine.hits;

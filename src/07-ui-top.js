@@ -9,7 +9,7 @@ Object.assign(UI, {
   buildTop() {
     const top = $('#top');
     top.replaceChildren();
-    const logo = h('div', { class: 'logo', hint: 'BeatOk Studio' }, h('i', null, ico('play')), h('span', { text: 'BeatOk' }));
+    const logo = h('div', { class: 'logo', hint: 'Bt Studio' }, h('i', null, ico('play')), h('span', { text: 'Bt' }));
     const bt = h('button', { class: 'btn icon mobonly', 'aria-label': 'Звуки и шаблоны', hint: 'Открыть браузер звуков', onclick: () => document.body.classList.toggle('bopen') }, ico('menu'));
     const file = h('button', { class: 'btn ghost', id: 'btnFile', hint: 'Проекты, шаблоны, экспорт' }, 'Файл');
     file.addEventListener('click', () => { const r = file.getBoundingClientRect(); this.fileMenu(r.left, r.bottom + 4); });
@@ -177,7 +177,7 @@ Object.assign(UI, {
   },
 
   updateTitle() {
-    document.title = (P.name ? P.name + ' · ' : '') + 'BeatOk Studio';
+    document.title = (P.name ? P.name + ' · ' : '') + 'Bt Studio';
   },
 
   drawSpectrum() {

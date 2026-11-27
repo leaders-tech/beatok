@@ -1,4 +1,4 @@
-# BeatOk agent notes
+# Bt agent notes
 
 - Single-page beat studio. No framework, no runtime dependencies; plain JS files in `src/` are concatenated by `build.mjs` into `dist/index.html` inside one block scope. Keep file number prefixes in load order.
 - UI text is Russian; DAW window names stay English (Channel Rack, Piano Roll, Playlist).

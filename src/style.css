@@ -296,3 +296,6 @@ select.sel option{background:#1d1e23;color:var(--ink)}
   .lcd.time,.lcd.bpm{min-width:0}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.rackin{position:relative}
+.phd{position:absolute;left:0;top:0;width:2px;margin-left:-1px;background:var(--acc);box-shadow:0 0 8px var(--acc);pointer-events:none;z-index:3;display:none;will-change:transform}

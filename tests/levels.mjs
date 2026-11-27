@@ -8,7 +8,7 @@ await page.goto('file://' + process.cwd() + '/dist/index.html');
 await page.waitForTimeout(500);
 const res = await page.evaluate(async () => {
   const out = [];
-  const { P } = BeatOk;
+  const { P } = Bt;
   const tables = window.__tables;
   for (const [type, names] of tables) {
     for (const name of names) {

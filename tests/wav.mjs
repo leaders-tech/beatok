@@ -9,9 +9,9 @@ await page.goto('file://' + process.cwd() + '/dist/index.html');
 await page.waitForTimeout(500);
 for (const k of (process.argv[2] || 'trap').split(',')) {
   const b64 = await page.evaluate(async k => {
-    await window.__load(BeatOk.TEMPLATES[k]());
-    const buf = await BeatOk.Engine.render({ mode: 'song', tail: 1.5 });
-    const u8 = BeatOk.encodeWav(buf, 16);
+    await window.__load(Bt.TEMPLATES[k]());
+    const buf = await Bt.Engine.render({ mode: 'song', tail: 1.5 });
+    const u8 = Bt.encodeWav(buf, 16);
     let s = ''; for (let i = 0; i < u8.length; i += 0x8000) s += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000));
     return btoa(s);
   }, k);

@@ -137,9 +137,9 @@ Object.assign(UI, {
   },
 
   async downloadProject() {
-    const data = JSON.stringify({ app: 'BeatOk', v: 1, proj: P, samples: Samples.used(P) });
+    const data = JSON.stringify({ app: 'Bt', v: 1, proj: P, samples: Samples.used(P) });
     try {
-      const name = await saveFile(safeName(P.name) + '.beatok.json', data, 'application/json');
+      const name = await saveFile(safeName(P.name) + '.bt.json', data, 'application/json');
       if (name) this.toast('Файл проекта сохранён');
     } catch (e) { this.toast('Не удалось сохранить файл'); }
   },
@@ -156,7 +156,7 @@ Object.assign(UI, {
         await loadProjectData(data);
         this.toast('Открыт «' + P.name + '»');
       } catch (e) {
-        this.modal({ title: 'Не получилось открыть', body: 'Это не файл проекта BeatOk.', buttons: [{ label: 'OK', acc: true }] });
+        this.modal({ title: 'Не получилось открыть', body: 'Это не файл проекта Bt.', buttons: [{ label: 'OK', acc: true }] });
       }
     });
     document.body.append(inp);

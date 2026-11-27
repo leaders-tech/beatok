@@ -18,17 +18,17 @@ await page.screenshot({ path: out + '/01-load.png' });
 await page.mouse.click(700, 300);
 await page.keyboard.press('Space');
 await page.waitForTimeout(1800);
-const st = await page.evaluate(() => ({ playing: BeatOk.Engine.playing, pos: BeatOk.Engine.displayPos(), voices: BeatOk.Engine.graph.voices.length, state: BeatOk.Engine.ctx.state }));
+const st = await page.evaluate(() => ({ playing: Bt.Engine.playing, pos: Bt.Engine.displayPos(), voices: Bt.Engine.graph.voices.length, state: Bt.Engine.ctx.state }));
 console.log('play state', JSON.stringify(st));
 await page.screenshot({ path: out + '/02-playing.png' });
 await page.keyboard.press('Space');
 const renders = await page.evaluate(async () => {
   const res = {};
   for (const k of ['trap', 'house', 'lofi']) {
-    const p = BeatOk.TEMPLATES[k]();
+    const p = Bt.TEMPLATES[k]();
     await window.__load(p);
     const t0 = performance.now();
-    const buf = await BeatOk.Engine.render({ mode: 'song', tail: 1, normalize: false });
+    const buf = await Bt.Engine.render({ mode: 'song', tail: 1, normalize: false });
     const ms = performance.now() - t0;
     let peak = 0, sum = 0, n = 0, clip = 0;
     for (let c = 0; c < 2; c++) { const d = buf.getChannelData(c); for (let i = 0; i < d.length; i += 3) { const a = Math.abs(d[i]); if (a > peak) peak = a; if (a > 0.99) clip++; sum += d[i] * d[i]; n++; } }

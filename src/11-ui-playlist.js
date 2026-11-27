@@ -212,8 +212,7 @@ Object.assign(UI, {
       cv.setPointerCapture(e.pointerId);
       if (y < PLK.RH && x > PLK.TW) {
         op = { kind: 'seek' };
-        Engine.songStart = floorS(G.s(x));
-        if (Engine.playing && Engine.mode === 'song') Engine.play();
+        Engine.seek(Math.max(0, floorS(G.s(x))));
         this.drawPlaylist();
         return;
       }
@@ -260,7 +259,7 @@ Object.assign(UI, {
         return;
       }
       if (op.kind === 'seek') {
-        Engine.songStart = floorS(G.s(x));
+        Engine.seek(Math.max(0, floorS(G.s(x))));
         this.drawPlaylist();
       } else if (op.kind === 'erase') {
         const hit = this.hitClip(G, x, y);

@@ -182,7 +182,7 @@ async function start(hot) {
     e.preventDefault();
     const f = files[0];
     if (/\.json$/i.test(f.name)) {
-      try { await loadProjectData(JSON.parse(await f.text())); UI.toast('Открыт «' + P.name + '»'); } catch (err) { UI.toast('Это не файл проекта BeatOk'); }
+      try { await loadProjectData(JSON.parse(await f.text())); UI.toast('Открыт «' + P.name + '»'); } catch (err) { UI.toast('Это не файл проекта Bt'); }
     } else UI.importSamples(files);
   });
   if (window.claude && window.claude.hot && window.claude.hot.snapshot) {
@@ -196,7 +196,7 @@ window.__presetParams = presetParams;
 window.__INSTR = INSTR_PLAY;
 window.__tables = [['drum', Object.keys(DRUM_PRESETS)], ['bass808', Object.keys(BASS_PRESETS)], ['synth', Object.keys(SYNTH_PRESETS)]];
 window.__load = p => loadProjectData({ proj: p, samples: [] });
-window.BeatOk = { Engine, UI, History, Samples, Store, TEMPLATES, encodeWav, makeMidi, get P() { return P; } };
+window.Bt = { Engine, UI, History, Samples, Store, TEMPLATES, encodeWav, makeMidi, get P() { return P; } };
 
 {
   const hot = window.claude && window.claude.hot;

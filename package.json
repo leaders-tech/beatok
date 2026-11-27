@@ -1,8 +1,8 @@
 {
-  "name": "beatok",
+  "name": "bt",
   "version": "1.0.0",
   "private": true,
-  "description": "BeatOk Studio: online beat-making studio in one HTML page (Web Audio, no dependencies)",
+  "description": "Bt Studio: online beat-making studio in one HTML page (Web Audio, no dependencies)",
   "type": "module",
   "scripts": {
     "build": "node build.mjs",

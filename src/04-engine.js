@@ -387,19 +387,46 @@ const Engine = {
     return songLength(P);
   },
 
+  heardTime() {
+    const c = this.ctx;
+    try {
+      const ts = c.getOutputTimestamp();
+      if (ts && ts.contextTime > 0 && ts.performanceTime > 0) {
+        const t = ts.contextTime + (performance.now() - ts.performanceTime) / 1000;
+        if (Math.abs(t - c.currentTime) < 0.5) return t;
+      }
+    } catch (e) {}
+    return c.currentTime - (c.outputLatency || c.baseLatency || 0);
+  },
+
   displayPos() {
     if (!this.playing || !this.ctx) return this.mode === 'song' ? this.songStart : 0;
-    const lat = this.ctx.outputLatency || this.ctx.baseLatency || 0;
-    const p = Math.max(this.anchorPos, this.posAt(this.ctx.currentTime - lat));
+    let t = this.heardTime();
+    if (t < this._ht) t = this._ht;
+    this._ht = t;
+    const p = Math.max(this.anchorPos, this.posAt(t));
     const L = this.loopLen();
     if (this.mode === 'song' && !this.loopSong) return p;
     return ((p % L) + L) % L;
+  },
+
+  seek(pos) {
+    this.songStart = pos;
+    if (!this.playing || !this.ctx) return;
+    if (this.graph) this.graph.killAll();
+    this.hits = [];
+    this._ht = 0;
+    this.anchorTime = this.ctx.currentTime + 0.03;
+    this.anchorPos = pos;
+    this.schedPos = pos;
+    this.tick();
   },
 
   play() {
     this.init();
     if (this.playing) this.stop(true);
     this.playing = true;
+    this._ht = 0;
     this.anchorTime = this.ctx.currentTime + 0.06;
     this.anchorPos = this.mode === 'song' ? this.songStart : 0;
     this.schedPos = this.anchorPos;
@@ -604,7 +631,7 @@ function makeMidi(proj, mode) {
   };
   const tracks = [];
   const us = Math.round(60000000 / proj.bpm);
-  const name0 = str(proj.name || 'BeatOk');
+  const name0 = str(proj.name || 'Bt');
   tracks.push(track([0, 0xff, 0x03, ...vlq(name0.length), ...name0, 0, 0xff, 0x51, 3, (us >> 16) & 255, (us >> 8) & 255, us & 255, 0, 0xff, 0x58, 4, 4, 2, 24, 8, 0, 0xff, 0x2f, 0]));
   let chanNo = 0;
   for (const ch of proj.channels) {
