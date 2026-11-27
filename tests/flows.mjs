@@ -4,6 +4,7 @@ const CHROME = process.env.CHROME || (existsSync('/usr/bin/google-chrome') ? '/u
 const browser = await chromium.launch({ executablePath: CHROME, args: ['--autoplay-policy=no-user-gesture-required'] });
 const ctx = await browser.newContext({ viewport: { width: 1400, height: 900 }, acceptDownloads: true });
 const page = await ctx.newPage();
+await page.addInitScript(() => { try { if (!localStorage.getItem('bt:learn')) localStorage.setItem('bt:learn', '{"seen":1}'); } catch (e) {} });
 const errors = [];
 page.on('pageerror', e => errors.push('pageerror: ' + e.message + ' @ ' + (e.stack || '').split('\n').slice(1, 3).join(' | ')));
 page.on('console', m => { if (m.type() === 'error' && !m.text().includes('ERR_FAILED')) errors.push('console: ' + m.text()); });

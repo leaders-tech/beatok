@@ -146,6 +146,9 @@ const SYNTH_PRESETS = {
   'Chip Lead': { o1w: 'square', o2lvl: 0, cutoff: 20000, res: 0, a: 0.001, d: 0.1, s: 0.8, r: 0.05, lfoT: 'pitch', lfoR: 6, lfoD: 0.1, gain: 0.6 },
   'Arp Square': { o1w: 'square', o2w: 'square', o2oct: 1, o2lvl: 0.3, cutoff: 1800, res: 4, fEnv: 0.5, fd: 0.15, a: 0.001, d: 0.25, s: 0.2, r: 0.15, gain: 0.7 },
   'Flute': { o1w: 'sine', o2lvl: 0, noise: 0.08, cutoff: 3500, res: 0.5, a: 0.06, d: 0.2, s: 0.9, r: 0.15, lfoT: 'pitch', lfoR: 5, lfoD: 0.12, gain: 0.8 },
+  'Glass Bell': { o1w: 'sine', o2w: 'sine', o2oct: 2, o2lvl: 0, fm: 1.4, fmDec: 0.22, uni: 2, uniDet: 7, uniSpr: 0.7, cutoff: 11000, a: 0.001, d: 1.1, s: 0, r: 0.9, velS: 0.7, gain: 2 },
+  'Plugg Keys': { o1w: 'triangle', o2w: 'sine', o2oct: 1, o2lvl: 0.3, uni: 3, uniDet: 12, uniSpr: 0.8, cutoff: 2600, res: 0.6, fEnv: 0.2, fd: 0.6, a: 0.008, d: 1.8, s: 0.35, r: 1.1, lfoT: 'pitch', lfoR: 0.7, lfoD: 0.05, velS: 0.6, gain: 0.9 },
+  'Dark Pad': { o1w: 'sawtooth', o2w: 'triangle', o2oct: -1, o2lvl: 0.5, uni: 4, uniDet: 14, uniSpr: 0.9, cutoff: 650, res: 1.2, fEnv: 0.15, fa: 1, fd: 2, fs: 0.4, fr: 1.5, a: 0.6, d: 1.5, s: 0.85, r: 1.6, lfoT: 'filter', lfoR: 0.18, lfoD: 0.3, gain: 0.85 },
 };
 
 const BASS_PRESETS = {
@@ -153,6 +156,8 @@ const BASS_PRESETS = {
   '808 Distorted': { decay: 1.4, punch: 16, drive: 0.75, tone: 4000, click: 0.35 },
   '808 Long Glide': { decay: 2.8, glide: 0.12, drive: 0.35 },
   '808 Short': { decay: 0.5, punch: 10, drive: 0.2, glide: 0 },
+  '808 Jerk': { decay: 0.95, punch: 19, pTime: 0.06, click: 0.35, drive: 0.6, tone: 3600, glide: 0.07 },
+  '808 Dark Slide': { decay: 4, punch: 8, pTime: 0.04, click: 0.15, drive: 0.45, tone: 2200, glide: 0.22, follow: 1, gain: 0.8 },
 };
 
 const DRUM_PRESETS = {
@@ -164,8 +169,11 @@ const DRUM_PRESETS = {
   'Snare Fat': { kind: 'snare', tune: -3, decay: 1.4, tone: 0.45, snap: 0.6, drive: 0.25 },
   'Clap': { kind: 'clap', decay: 1, tone: 0.5 },
   'Clap Big': { kind: 'clap', decay: 1.8, tone: 0.4 },
+  'Clap Dry': { kind: 'clap', decay: 0.7, tone: 0.75, snap: 0.8, gain: 1.2 },
+  'Snare Jerk': { kind: 'snare', tune: 5, decay: 0.5, tone: 0.85, snap: 0.9, gain: 0.95 },
   'Hi-Hat': { kind: 'hat', decay: 1, tone: 0.6, gain: 0.8 },
   'Hi-Hat Tight': { kind: 'hat', decay: 0.55, tone: 0.8, gain: 0.8 },
+  'Hat Soft': { kind: 'hat', decay: 2.2, tone: 0.6, snap: 0.3, gain: 1.2 },
   'Open Hat': { kind: 'ohat', decay: 1, tone: 0.6, gain: 0.7 },
   'Crash': { kind: 'crash', decay: 1, tone: 0.5, gain: 0.6 },
   'Ride': { kind: 'ride', decay: 1, tone: 0.5, gain: 0.6 },

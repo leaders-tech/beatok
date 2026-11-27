@@ -29,7 +29,7 @@ Object.assign(UI, {
 
   strip(i) {
     const m = P.mixer[i];
-    const el = h('div', { class: 'strip' + (i === 0 ? ' master' : '') + (this.selIns === i ? ' on' : ''), hint: 'Клик — эффекты этой дорожки, двойной клик по имени — переименовать' });
+    const el = h('div', { class: 'strip' + (i === 0 ? ' master' : '') + (this.selIns === i ? ' on' : ''), 'data-ins': i, hint: 'Клик — эффекты этой дорожки, двойной клик по имени — переименовать' });
     el.addEventListener('click', e => {
       if (e.target.closest('.knob,.fader,button')) return;
       this.selIns = i;
@@ -109,7 +109,7 @@ Object.assign(UI, {
     eq.append(h('div', { class: 'fxhd' }, h('span', { class: 'nm', text: 'Быстрый EQ' })), eqb);
     fxp.append(eq);
     m.fx.forEach((slot, k) => fxp.append(this.fxSlot(i, slot, k)));
-    const addSel = h('select', { class: 'sel', style: { width: '100%', maxWidth: 'none', height: '32px' }, 'aria-label': 'Добавить эффект' });
+    const addSel = h('select', { class: 'sel', style: { width: '100%', maxWidth: 'none', height: '32px' }, 'aria-label': 'Добавить эффект', 'data-learn': 'addfx' });
     addSel.append(h('option', { value: '', text: '+ Добавить эффект…' }));
     for (const [k, d] of Object.entries(FX_DEFS)) addSel.append(h('option', { value: k, text: d.name }));
     addSel.addEventListener('change', () => { if (addSel.value) this.addFxTo(i, addSel.value); });

@@ -166,6 +166,7 @@ Object.assign(UI, {
   helpDialog() {
     const rows = [
       ['Пробел', 'Играть / пауза'],
+      ['F2', 'Обучение: пошаговые уроки'],
       ['F5 / F6 / F7 / F9', 'Playlist / Channel Rack / Piano Roll / Микшер'],
       ['Z S X D C V … M', 'Ноты нижней октавы (как пианино)'],
       ['Q 2 W 3 E R … P', 'Ноты верхней октавы'],

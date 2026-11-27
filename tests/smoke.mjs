@@ -8,6 +8,7 @@ const url = 'file://' + join(root, 'dist', 'index.html');
 const out = process.argv[2] || '/tmp/shots';
 const browser = await chromium.launch({ executablePath: CHROME, args: ['--autoplay-policy=no-user-gesture-required'] });
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+await page.addInitScript(() => { try { if (!localStorage.getItem('bt:learn')) localStorage.setItem('bt:learn', '{"seen":1}'); } catch (e) {} });
 const errors = [];
 page.on('pageerror', e => errors.push('pageerror: ' + e.message));
 page.on('console', m => { if (m.type() === 'error') errors.push('console: ' + m.text()); });

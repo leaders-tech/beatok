@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "node build.mjs",
-    "test": "node build.mjs && node tests/smoke.mjs /tmp && node tests/flows.mjs && node tests/full.mjs",
+    "test": "node build.mjs && node tests/smoke.mjs /tmp && node tests/flows.mjs && node tests/full.mjs && node tests/learn.mjs",
     "levels": "node build.mjs && node tests/levels.mjs"
   },
   "devDependencies": {

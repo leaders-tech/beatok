@@ -47,7 +47,7 @@ Object.assign(UI, {
     const chSel = optSelect(P.channels.map(c => [c.id, c.name]), ch.id, id => { this.rollCh = id; this.selCh = id; this.rollSel.clear(); this.renderRoll(); requestAnimationFrame(() => this.centerRoll()); this.renderRack(); });
     chSel.setAttribute('aria-label', 'Канал');
     chSel.style.borderLeft = '4px solid ' + ch.color;
-    const tools = h('div', { class: 'tools' });
+    const tools = h('div', { class: 'tools', 'data-learn': 'tools' });
     for (const [k, ic, hint] of [['draw', 'pen', 'Карандаш: клик — нота, тяни — длина, правая кнопка — стереть'], ['select', 'sel', 'Выделение рамкой (или Ctrl + тянуть)'], ['erase', 'erase', 'Ластик']]) {
       const b = h('button', { class: this.tool === k ? 'on' : '', 'aria-label': hint, hint }, ico(ic));
       b.addEventListener('click', () => { this.tool = k; this.renderRoll(); });
@@ -55,12 +55,16 @@ Object.assign(UI, {
     }
     const snap = optSelect(SNAPS, this.snap, x => { this.snap = x; this.drawRoll(); });
     snap.dataset.hint = 'Привязка к сетке';
+    snap.dataset.learn = 'snap';
     const chord = optSelect(Object.entries(CHORDS).map(([k, [n]]) => [k, n]), this.chord, x => { this.chord = x; });
     chord.dataset.hint = 'Штамп аккорда: один клик ставит весь аккорд';
+    chord.dataset.learn = 'chord';
     const key = optSelect(NOTE_NAMES.map((n, i) => [i, n]), P.key, x => { P.key = +x; History.commit('Тональность'); this.drawRoll(); });
     key.dataset.hint = 'Тональность (подсветка нот лада)';
+    key.dataset.learn = 'key';
     key.style.maxWidth = '60px';
     const scale = optSelect(Object.entries(SCALES).map(([k, [n]]) => [k, n]), P.scale, x => { P.scale = x; History.commit('Лад'); this.drawRoll(); });
+    scale.dataset.learn = 'scale';
     const ghost = h('button', { class: 'btn small' + (this.ghost ? ' on' : ''), hint: 'Показывать полупрозрачно ноты других каналов этого паттерна', text: 'Призраки' });
     ghost.addEventListener('click', () => { this.ghost = !this.ghost; ghost.classList.toggle('on', this.ghost); this.drawRoll(); });
     const q = h('button', { class: 'btn small', hint: 'Квантовать: выровнять начало нот по сетке (Ctrl+Q)', text: 'Квантовать', onclick: () => this.quantize() });
@@ -70,8 +74,9 @@ Object.assign(UI, {
     const inst = h('button', { class: 'btn small icon ghost', 'aria-label': 'Настройки инструмента', hint: 'Настройки инструмента', onclick: () => this.openInstr(ch.id) }, ico('gear'));
     const lenSel = optSelect([16, 32, 48, 64, 96, 128].map(n => [n, n / 16 + ' т.']), pat.len, x => { pat.len = +x; History.commit('Длина'); this.renderRack(); this.drawRoll(); this.renderPlaylist(); });
     lenSel.dataset.hint = 'Длина паттерна в тактах';
+    lenSel.dataset.learn = 'rlen';
     bar.append(chSel, play, inst, h('span', { class: 'sep' }), tools, snap, chord, h('span', { class: 'sep' }), key, scale, ghost, h('span', { class: 'sep' }), q, tl, lenSel);
-    const area = h('div', { class: 'rcv' });
+    const area = h('div', { class: 'rcv', 'data-learn': 'rollcv' });
     const cv = h('canvas', { class: 'cv', tabindex: 0, 'aria-label': 'Piano Roll' });
     area.append(cv);
     wrap.append(bar, area);

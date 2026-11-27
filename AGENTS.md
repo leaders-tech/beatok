@@ -8,4 +8,5 @@
 - Times in patterns are in steps (1 step = 1/16 note). Notes: `{ t, d, n, v }`.
 - Inside claude.ai the page uses capabilities: `downloads` (WAV and MID are wrapped into ZIP, because only some extensions are allowed), `db` and `user` (per-user projects under `data/users/<id>/`). Outside claude.ai it falls back to `<a download>` and localStorage.
 - Deploy: `docker-compose.yml` has one public service `web` on port 8080 (`tlfpaas.route: "web"`), nginx runs as non-root. Do not add `ports` or Compose `user`.
+- Lessons live in `16-ui-learn.js` (`COURSES`). Each step has `text`, optional `why`, `prepare()` (UI only), `target()` (elements to highlight), `check(P)` (`true` or a hint string) and `demo(p)` (mutates the given project only, no UI). Course projects mark channels and patterns with `role` so checks survive renames. The `jerk` and `plugg` templates are built by running all demos on the starter project, so a demo change also changes the template. UI anchors for highlights use `data-learn` attributes.
 - Tests: `npm test` (Playwright + system Chrome at `/usr/bin/google-chrome`).

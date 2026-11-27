@@ -13,9 +13,10 @@ Object.assign(UI, {
     const bt = h('button', { class: 'btn icon mobonly', 'aria-label': 'Звуки и шаблоны', hint: 'Открыть браузер звуков', onclick: () => document.body.classList.toggle('bopen') }, ico('menu'));
     const file = h('button', { class: 'btn ghost', id: 'btnFile', hint: 'Проекты, шаблоны, экспорт' }, 'Файл');
     file.addEventListener('click', () => { const r = file.getBoundingClientRect(); this.fileMenu(r.left, r.bottom + 4); });
+    this.bLearn = h('button', { class: 'btn ghost' + (this.learnOpen ? ' on' : ''), id: 'btnLearn', hint: 'Пошаговые уроки: джерк, плаг и как устроен Bt', onclick: () => this.toggleLearn() }, ico('learn'), h('span', { class: 'hide-s', text: 'Обучение' }));
     this.bUndo = h('button', { class: 'btn icon ghost', 'aria-label': 'Отменить', hint: 'Отменить (Ctrl+Z)', onclick: () => History.undo() }, ico('undo'));
     this.bRedo = h('button', { class: 'btn icon ghost', 'aria-label': 'Повторить', hint: 'Повторить (Ctrl+Y)', onclick: () => History.redo() }, ico('redo'));
-    const seg = h('div', { class: 'seg', hint: 'Что играет: только текущий паттерн или весь трек из Playlist' });
+    const seg = h('div', { class: 'seg', 'data-learn': 'mode', hint: 'Что играет: только текущий паттерн или весь трек из Playlist' });
     this.bPat = h('button', { text: 'Паттерн', onclick: () => Engine.setMode('pattern') });
     this.bSong = h('button', { text: 'Трек', onclick: () => Engine.setMode('song') });
     seg.append(this.bPat, this.bSong);
@@ -28,7 +29,7 @@ Object.assign(UI, {
     this.lcdBpm = h('div', { class: 'lcd bpm', hint: 'Темп: тяни вверх/вниз, колесо, двойной клик — ввести число' });
     this.setupBpm();
     this.kSwing = knob({ min: 0, max: 100, value: P.swing, def: 0, step: 1, fmt: v => Math.round(v) + '%', size: 26, hint: 'Свинг: сдвигает чётные шестнадцатые', onInput: v => { P.swing = v; }, onCommit: () => History.commit('Свинг') });
-    const pg = h('div', { class: 'grp', hint: 'Текущий паттерн' });
+    const pg = h('div', { class: 'grp', 'data-learn': 'patsel', hint: 'Текущий паттерн' });
     this.patSel = h('select', { class: 'sel', 'aria-label': 'Паттерн' });
     this.patSel.addEventListener('change', () => { this.selectPattern(this.patSel.value); });
     this.patSel.addEventListener('keydown', e => e.stopPropagation());
@@ -37,10 +38,10 @@ Object.assign(UI, {
       h('button', { class: 'btn icon small ghost', 'aria-label': 'Действия с паттерном', hint: 'Переименовать, клонировать, удалить', onclick: e => { const r = e.currentTarget.getBoundingClientRect(); this.patternMenu(curPat(), r.left, r.bottom + 4); } }, ico('menu')));
     this.kMaster = knob({ min: 0, max: 1.2, value: P.masterVol, def: 0.85, fmt: fmtPct, size: 26, hint: 'Громкость мастера', onInput: v => { P.masterVol = v; Engine.graph && Engine.graph.setMaster(); }, onCommit: () => History.commit('Мастер') });
     this.spec = h('canvas', { id: 'spec', hint: 'Спектр мастер-выхода' });
-    const exp = h('button', { class: 'btn acc', hint: 'Сохранить бит в WAV или MIDI', onclick: () => this.exportDialog() }, ico('dl'), h('span', { class: 'hide-s', text: 'Экспорт' }));
+    const exp = h('button', { class: 'btn acc', 'data-learn': 'export', hint: 'Сохранить бит в WAV или MIDI', onclick: () => this.exportDialog() }, ico('dl'), h('span', { class: 'hide-s', text: 'Экспорт' }));
     this.storeBadge = $('#hint .store') || h('div', { class: 'store', hint: '' }, h('i'), h('span'));
-    top.append(bt, logo, file, h('div', { class: 'grp' }, this.bUndo, this.bRedo), h('div', { class: 'sep hide-s' }),
-      seg, h('div', { class: 'grp' }, this.bPlay, bStop, this.bRec, this.bMetro, this.bLoop), this.lcdTime, this.lcdBpm, h('div', { class: 'tk' }, h('span', { text: 'Свинг' }), this.kSwing),
+    top.append(bt, logo, file, this.bLearn, h('div', { class: 'grp' }, this.bUndo, this.bRedo), h('div', { class: 'sep hide-s' }),
+      seg, h('div', { class: 'grp' }, this.bPlay, bStop, this.bRec, this.bMetro, this.bLoop), this.lcdTime, this.lcdBpm, h('div', { class: 'tk', 'data-learn': 'swing' }, h('span', { text: 'Свинг' }), this.kSwing),
       h('div', { class: 'sep hide-s' }), pg, h('div', { class: 'grow' }), h('div', { class: 'tk' }, h('span', { text: 'Мастер' }), this.kMaster), this.spec, exp);
     $('#hint').append(this.storeBadge);
     this.onTransport();
@@ -142,7 +143,7 @@ Object.assign(UI, {
       { head: pat.name },
       { label: 'Переименовать…', action: async () => { const n = await this.prompt('Имя паттерна', 'Название', pat.name); if (n) { pat.name = n; History.commit('Имя'); this.renderAll(); } } },
       { label: 'Клонировать', action: () => {
-        const c = deep(pat); c.id = uid('p'); c.name = pat.name + ' (копия)'; c.color = PALETTE[P.patterns.length % PALETTE.length];
+        const c = deep(pat); delete c.role; c.id = uid('p'); c.name = pat.name + ' (копия)'; c.color = PALETTE[P.patterns.length % PALETTE.length];
         P.patterns.splice(P.patterns.indexOf(pat) + 1, 0, c); P.curPat = c.id; History.commit('Клон'); this.renderAll();
       } },
       { label: 'Очистить ноты', action: () => { pat.notes = {}; History.commit('Очистить'); this.renderAll(); } },

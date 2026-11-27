@@ -91,6 +91,7 @@ Object.assign(UI, {
     if (k === 'F7') { e.preventDefault(); this.openRoll(); return; }
     if (k === 'F9') { e.preventDefault(); this.showTab('bot', 'mixer'); return; }
     if (k === 'F1') { e.preventDefault(); this.helpDialog(); return; }
+    if (k === 'F2') { e.preventDefault(); this.toggleLearn(); return; }
     if (ctrl && !e.shiftKey && k.toLowerCase() === 'z') { e.preventDefault(); History.undo(); return; }
     if (ctrl && (k.toLowerCase() === 'y' || (e.shiftKey && k.toLowerCase() === 'z'))) { e.preventDefault(); History.redo(); return; }
     if (ctrl && k.toLowerCase() === 's') { e.preventDefault(); this.saveProject(); return; }
@@ -127,6 +128,7 @@ function frame() {
     UI.drawSpectrum();
     UI.rackFrame();
     UI.mixerFrame();
+    UI.learnFrame();
     if (Engine.playing) {
       if (UI.topTab === 'roll' && Engine.mode === 'pattern') UI.drawRoll();
       if (UI.botTab === 'playlist' && Engine.mode === 'song') {
@@ -189,13 +191,15 @@ async function start(hot) {
     try { window.claude.hot.snapshot(() => ({ proj: P, samples: [] })); } catch (e) {}
   }
   requestAnimationFrame(frame);
-  if (first) setTimeout(() => UI.toast('Это готовый трэп-бит. Нажми пробел, чтобы послушать', 4000), 600);
+  if (!UI.learnProg().seen && innerWidth > 1100) UI.toggleLearn(true);
+  else if (first) setTimeout(() => UI.toast('Это готовый трэп-бит. Нажми пробел, чтобы послушать', 4000), 600);
 }
 
 window.__presetParams = presetParams;
 window.__INSTR = INSTR_PLAY;
 window.__tables = [['drum', Object.keys(DRUM_PRESETS)], ['bass808', Object.keys(BASS_PRESETS)], ['synth', Object.keys(SYNTH_PRESETS)]];
 window.__load = p => loadProjectData({ proj: p, samples: [] });
+window.__fx = (ctx, type, p) => buildFx(ctx, type, Object.assign(fxDefaults(type), p || {}));
 window.Bt = { Engine, UI, History, Samples, Store, TEMPLATES, encodeWav, makeMidi, get P() { return P; } };
 
 {

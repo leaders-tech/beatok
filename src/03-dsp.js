@@ -873,10 +873,16 @@ const FX_BUILD = {
   },
   limiter(ctx, p) {
     const ig = ctx.createGain(), c = ctx.createDynamicsCompressor(), og = ctx.createGain();
-    c.threshold.value = -6; c.ratio.value = 20; c.knee.value = 0; c.attack.value = 0.001;
+    c.ratio.value = 20; c.knee.value = 0; c.attack.value = 0.001;
     ig.connect(c).connect(og);
     const fx = { input: ig, output: og, node: c };
-    fx.update = q => { ig.gain.value = dbToG(q.gain); c.release.value = q.rel; og.gain.value = dbToG(6 + q.ceil); };
+    fx.update = q => {
+      const thr = Math.min(-0.1, q.ceil);
+      ig.gain.value = dbToG(q.gain);
+      c.threshold.value = thr;
+      c.release.value = q.rel;
+      og.gain.value = dbToG(-0.6 * -thr * (1 - 1 / 20));
+    };
     fx.update(p);
     return fx;
   },

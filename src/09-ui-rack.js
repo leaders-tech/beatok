@@ -46,6 +46,7 @@ Object.assign(UI, {
     const lenSel = optSelect([16, 32, 48, 64, 96, 128].map(n => [n, n / 16 + (n === 16 ? ' такт' : n < 80 ? ' такта' : ' тактов')]), pat.len, x => {
       pat.len = +x; History.commit('Длина паттерна'); this.renderRack(); this.renderRoll(); this.renderPlaylist();
     });
+    lenSel.dataset.learn = 'plen';
     foot.append(add, h('span', { class: 'lbl', text: 'Длина' }), lenSel);
     inner.append(foot);
     inner.append(this.phEl);
@@ -54,7 +55,7 @@ Object.assign(UI, {
   },
 
   rackRow(ch, pat, groups) {
-    const row = h('div', { class: 'crow' + (this.selCh === ch.id ? ' sel' : '') });
+    const row = h('div', { class: 'crow' + (this.selCh === ch.id ? ' sel' : ''), 'data-ch': ch.id });
     const anySolo = P.channels.some(c => c.solo);
     const led = h('div', { class: 'led' + (!ch.mute && (!anySolo || ch.solo) ? ' on' : ''), role: 'switch', hint: 'Вкл/выкл канал. Правый клик — соло' });
     led.addEventListener('click', () => { ch.mute = !ch.mute; this.chChanged(); });

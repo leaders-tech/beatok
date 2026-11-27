@@ -21,6 +21,7 @@ const ICONS = {
   piano: '<path d="M1 2h14v12H1zm2 2v8h1.5V8.5H5V4zm3 0v4.5h.5V12H8V4zm3 0v8h1.5V8.5H12V4z"/>',
   trash: '<path d="M5 1h6v2h4v2H1V3h4zM3 6h10l-1 9H4z"/>',
   help: '<path d="M8 1a7 7 0 1 1 0 14A7 7 0 0 1 8 1zm-.9 10v2h1.8v-2zM8 3.5c-1.7 0-3 1.1-3 2.8h1.8c0-.7.5-1.1 1.2-1.1s1.1.4 1.1 1c0 1.2-2 1.2-2 3.3h1.8c0-1.4 2-1.5 2-3.4 0-1.6-1.3-2.6-2.9-2.6z"/>',
+  learn: '<path d="M8 2 .5 5.8 8 9.6l5.5-2.8v3.7H15V6zM3.4 8.4v2.9C3.4 12.6 5.5 14 8 14s4.6-1.4 4.6-2.7V8.4L8 10.8z"/>',
   folder: '<path d="M1 3h5l2 2h7v9H1z"/>',
 };
 const ico = (n, cls) => { const s = svgEl('svg', { viewBox: '0 0 16 16', class: cls || '' }); s.innerHTML = ICONS[n]; return s; };

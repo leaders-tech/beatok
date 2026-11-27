@@ -8,11 +8,11 @@ Object.assign(UI, {
     const v = $('#vPlaylist');
     v.replaceChildren();
     const wrap = h('div', { class: 'pl' });
-    const pick = h('div', { class: 'picker', 'aria-label': 'Паттерны' });
+    const pick = h('div', { class: 'picker', 'aria-label': 'Паттерны', 'data-learn': 'picker' });
     const add = h('button', { class: 'btn small ghost', style: { width: '100%', marginBottom: '4px', justifyContent: 'flex-start' }, hint: 'Новый паттерн', onclick: () => this.newPattern() }, ico('plus'), 'Новый паттерн');
     pick.append(add);
     for (const p of P.patterns) {
-      const el = h('div', { class: 'pick' + (p.id === P.curPat ? ' on' : ''), hint: 'Клик — выбрать и рисовать им в Playlist, двойной клик — открыть, правый клик — меню' }, h('i', { style: { background: p.color } }), h('span', { text: p.name }));
+      const el = h('div', { class: 'pick' + (p.id === P.curPat ? ' on' : ''), 'data-pat': p.id, hint: 'Клик — выбрать и рисовать им в Playlist, двойной клик — открыть, правый клик — меню' }, h('i', { style: { background: p.color } }), h('span', { text: p.name }));
       el.addEventListener('click', () => this.selectPattern(p.id));
       el.addEventListener('dblclick', () => { this.selectPattern(p.id); this.showTab('top', 'rack'); });
       el.addEventListener('contextmenu', e => { e.preventDefault(); this.patternMenu(p, e.clientX, e.clientY); });
@@ -27,7 +27,7 @@ Object.assign(UI, {
       h('button', { class: 'btn small', 'aria-label': 'Приблизить', hint: 'Приблизить (Ctrl + колесо)', onclick: () => { this.pv.pps = clamp(this.pv.pps * 1.3, 1.5, 40); this.drawPlaylist(); } }, '+'),
     );
     bar.dataset.hint = 'Клик — поставить выбранный паттерн, тяни — двигать, за правый край — длина, правая кнопка — удалить, Shift+тянуть — копия';
-    const area = h('div', { class: 'rcv' });
+    const area = h('div', { class: 'rcv', 'data-learn': 'plcv' });
     const cv = h('canvas', { class: 'cv', 'aria-label': 'Playlist' });
     area.append(cv);
     right.append(bar, area);
